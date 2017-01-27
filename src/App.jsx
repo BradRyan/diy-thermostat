@@ -1,6 +1,8 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import Particle from 'particle-api-js';
 import { Link } from 'react-router';
+import NotificationSystem from 'react-notification-system';
+import _ from 'lodash';
 import logo from './logo.svg';
 import './App.css';
 
@@ -33,6 +35,14 @@ class App extends Component {
     this.handleLogout = this.handleLogout.bind(this);
   }
 
+  getChildContext() {
+    return {
+      addNotification: this.addNotification.bind(this),
+      displayError: this.displayError.bind(this),
+      displaySuccess: this.displaySuccess.bind(this),
+    };
+  }
+
   componentWillMount() {
     this.setState({ loggingIn: true });
     const self = this;
@@ -63,6 +73,30 @@ class App extends Component {
       // validate token;
       self.setState({ loggedIn: true, loggingIn: false });
     }
+  }
+
+  addNotification(notification) {
+    this.notifications.addNotification(notification);
+  }
+
+  displayError(err) {
+    console.dir(err);
+    const errorMessage = _.get(err, 'body.error') || err.message;
+    this.notifications.addNotification({
+      title: 'Whoops!',
+      message: errorMessage,
+      level: 'warning',
+      dismissable: true
+    });
+  }
+
+  displaySuccess(msg) {
+    this.notifications.addNotification({
+      title: 'Nice!',
+      message: msg,
+      level: 'success',
+      dismissable: true
+    });
   }
 
   handleLogout(statusCode) {
@@ -98,6 +132,7 @@ class App extends Component {
           <img src={logo} className="App-logo" alt="logo" />
           <h2><Link to="/">Thermostat App</Link></h2>
           {this.state.loggedIn ? <span>Logged In</span> : <span>Logged Out</span>}
+          <NotificationSystem ref={n => this.notifications = n} />
         </div>
         <div>
           {this.renderChildren()}
@@ -109,6 +144,12 @@ class App extends Component {
 
 App.propTypes = {
   children: React.PropTypes.element,
+};
+
+App.childContextTypes = {
+  addNotification: PropTypes.func,
+  displayError: PropTypes.func,
+  displaySuccess: PropTypes.func
 };
 
 export default App;

@@ -39,6 +39,14 @@ class Thermostat extends React.Component {
         fontSize: '22px',
         fontWeight: 'bold'
       },
+      msg: {
+        fill: 'white',
+        textAnchor: 'middle',
+        fontFamily: 'Helvetica, sans-serif',
+        alignmentBaseline: 'central',
+        fontSize: '22px',
+        fontWeight: 'bold'
+      },
       away: {
         fill: 'white',
         textAnchor: 'middle',
@@ -119,8 +127,13 @@ class Thermostat extends React.Component {
     const offsetDegrees = 180 - (360 - tickDegrees) / 2;
     const tickArray = [];
     for (let iTick = 0; iTick < this.props.numTicks; iTick++) {
-      const isLarge = iTick === min || iTick === max;
-      const isActive = iTick >= min && iTick <= max;
+      let isLarge = iTick === min || iTick === max;
+      let isActive = iTick >= min && iTick <= max;
+      // prevent defauling to 0 tick mark if no ambient provided
+      if (!this.props.ambientTemperature) {
+        isActive = false;
+        isLarge = false;
+      }
       const tickElement = React.createElement('path', {
         key: ['tick-', iTick].join(''),
         d: this.pointsToPath(this.rotatePoints(isLarge ? tickPointsLarge : tickPoints, iTick * theta - offsetDegrees, [radius, radius])),
@@ -154,6 +167,17 @@ class Thermostat extends React.Component {
     const displayedTargetTemp = targetExists ? Math.round(this.props.targetTemperature) : '...';
 
     // Piece it all together to form the thermostat display.
+    // return (
+    //   <div
+    //     className="dial"
+    //     width={this.props.width}
+    //     height={this.props.height}
+    //     viewBox={['0 0 ', diameter, ' ', diameter].join('')}
+    //   >
+    //     <g> </g>
+    //   </div>
+    // );
+
     return React.createElement(
       'svg',
       { width: this.props.width, height: this.props.height, style: styles.dial,
@@ -172,8 +196,13 @@ class Thermostat extends React.Component {
       ),
       React.createElement(
         'text',
+        { x: radius, y: (radius - 70), style: styles.msg },
+        this.props.message
+      ),
+      React.createElement(
+        'text',
         { x: ambientPosition[0], y: ambientPosition[1], style: styles.ambient },
-        Math.round(this.props.ambientTemperature)
+        Math.round(this.props.ambientTemperature) || ''
       ),
       React.createElement(
         'text',
@@ -207,7 +236,9 @@ Thermostat.propTypes = {
   /* Desired temperature that the thermostat attempts to reach */
   targetTemperature: React.PropTypes.number,
   /* Current state of operations within the thermostat */
-  hvacMode: React.PropTypes.oneOf(['off', 'heating', 'cooling'])
+  hvacMode: React.PropTypes.oneOf(['off', 'heating', 'cooling']),
+  /* Text to display above temperature */
+  message: React.PropTypes.string
 };
 
 Thermostat.defaultProps = {
