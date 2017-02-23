@@ -1,0 +1,25 @@
+.temp-dial {
+  height: 200px;
+}
+
+
+.heater-slider {
+  width: 300px;
+  display: inline-block;
+}
+
+.therm-controls {
+  margin: auto;
+  margin-top: 15px;
+}
+
+.mode-select .mode-dropdown {
+  text-align: left;
+  display: inline-block;
+}
+
+.edit-schedule {
+  margin-left: 15px;
+  vertical-align: top;
+  margin-top: 27px;
+}

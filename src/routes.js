@@ -1,7 +1,9 @@
 import App from './App.jsx';
 // import Status from './pages/status.jsx';
 import SelectDevice from './pages/selectDevice.jsx';
-import DevicePage from './pages/device.jsx';
+// TODO - render heater vs other device page in another component
+import DevicePage from './pages/heater.jsx';
+import HeaterSchedule from './pages/schedule.jsx';
 
 const routes = {
   path: '/',
@@ -10,6 +12,7 @@ const routes = {
   childRoutes: [
     { path: 'devices', component: SelectDevice },
     { path: 'device/:deviceId', component: DevicePage },
+    { path: 'device/:deviceId/schedule', component: HeaterSchedule },
     // {
     //   path: 'inbox',
     //   component: Inbox,

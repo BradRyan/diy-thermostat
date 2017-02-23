@@ -1,0 +1,79 @@
+
+.logo {
+  float: left;
+}
+
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 45px;
+}
+
+.app-logo-text {
+  display: inline-block;
+  top: 13px;
+  position: absolute;
+}
+
+/*.App-header {
+  background-color: #222;
+  height: 45px;
+  color: white;
+}*/
+
+.app-title {
+  font-size: 12px;
+  display: inline-block;
+}
+
+.navbar-buttons {
+  float: right;
+  display: inline-block;
+}
+.nav-btn {
+  display: inline-block;
+  font-size: 22px;
+  min-width: 40px;
+  text-align: center;
+  height: 45px;
+  padding-right: 5px;
+}
+
+.nav-btn i {
+  padding-top: 5px;
+}
+.nav-btn div {
+  font-size: 11px;
+}
+
+a.dropdown__trigger {
+  color: inherit;
+  text-decoration: none;
+}
+
+.App-intro {
+  font-size: large;
+}
+
+@keyframes App-logo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Used in dropdown package */
+.dropdown {
+    display: inline-block;
+}
+
+.dropdown__content {
+    display: none;
+    color: black;
+}
+
+.dropdown--active .dropdown__content {
+    display: block;
+}
+
+.navbar-dropdown {
+  position: absolute;
+  right: 0px;
+}
